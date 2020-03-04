@@ -1,6 +1,7 @@
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,9 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 @Data
 @Slf4j
 @RequiredArgsConstructor
+@NoArgsConstructor
 class Message {
     private final static int GROUP_CHAT = 1;
-    @NonNull
     private int sender;
     @NonNull
     private int receiver;
@@ -18,8 +19,8 @@ class Message {
     private String encodedText;
     private boolean corrupted = false;
 
-    private Message() {
-        this.corrupted = true;
+    private Message(boolean corrupted) {
+        this.corrupted = corrupted;
     }
 
     boolean isGroupChat() {

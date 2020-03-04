@@ -9,17 +9,15 @@ import lombok.extern.slf4j.Slf4j;
 @AllArgsConstructor
 @NoArgsConstructor
 @Slf4j
-class UserStatus {
-    private User user;
-    private boolean isConnected;
-
-    String toJson() {
+class UserName {
+    private String name;
+    static UserName fromJson(String json){
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            return objectMapper.writeValueAsString(this);
+            return objectMapper.readValue(json, UserName.class);
         } catch (JsonProcessingException e) {
-            log.error("Unable to serialize UserStatus");
-            return "";
+            log.error("Unable to deserialize UserName", e);
+            return new UserName("UNNAMED");
         }
     }
 }
