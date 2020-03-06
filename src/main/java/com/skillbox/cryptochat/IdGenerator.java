@@ -1,3 +1,5 @@
+package com.skillbox.cryptochat;
+
 import java.util.concurrent.atomic.AtomicLong;
 
 class IdGenerator {

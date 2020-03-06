@@ -1,14 +1,18 @@
+package com.skillbox.cryptochat;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.java.Log;
+
+import java.util.logging.Level;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Slf4j
+@Log
 class UserStatus {
     private User user;
     private boolean connected;
@@ -18,7 +22,7 @@ class UserStatus {
         try {
             return objectMapper.writeValueAsString(this);
         } catch (JsonProcessingException e) {
-            log.error("Unable to serialize UserStatus");
+            log.log(Level.SEVERE, "Unable to serialize com.skillbox.cryptochat.UserStatus");
             return "";
         }
     }

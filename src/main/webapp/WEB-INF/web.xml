@@ -1,0 +1,19 @@
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee">
+    <servlet>
+        <servlet-name>startup</servlet-name>
+        <servlet-class>com.skillbox.cryptochat.StartupServlet</servlet-class>
+        <load-on-startup>0</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>startup</servlet-name>
+        <url-pattern>/_ah/start</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>stop</servlet-name>
+        <servlet-class>com.skillbox.cryptochat.StopServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>stop</servlet-name>
+        <url-pattern>/_ah/stop</url-pattern>
+    </servlet-mapping>
+</web-app>

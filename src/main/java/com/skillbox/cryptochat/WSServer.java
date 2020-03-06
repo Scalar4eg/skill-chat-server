@@ -1,3 +1,5 @@
+package com.skillbox.cryptochat;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -6,17 +8,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.java.Log;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 
-import static java.lang.System.exit;
-
-@Slf4j
+@Log
 class WSServer extends WebSocketServer {
-
+    private static WSServer instance;
     private static final Map<Long, WebSocket> users = new ConcurrentHashMap<>();
 
     private WSServer(int port) {
@@ -45,7 +46,7 @@ class WSServer extends WebSocketServer {
     public void onClose(WebSocket conn, int code, String reason, boolean remote) {
         User user = conn.getAttachment();
         if (user == null) {
-            log.warn("User not found in connections map");
+            log.log(Level.WARNING, "com.skillbox.cryptochat.User not found in connections map");
             return;
         }
         users.remove(user.getId());
@@ -55,12 +56,12 @@ class WSServer extends WebSocketServer {
 
     private void handleMessage(Message message, WebSocket conn) {
         if (message.isCorrupted()) {
-            log.error("Corrupted message");
+            log.log(Level.SEVERE, "Corrupted message");
             return;
         }
         User sender = conn.getAttachment();
         if (sender == null) {
-            log.warn("Sender not found in connections map");
+            log.log(Level.WARNING,"Sender not found in connections map");
             return;
         }
 
@@ -74,7 +75,7 @@ class WSServer extends WebSocketServer {
         WebSocket receiver = users.get(message.getReceiver());
 
         if (receiver == null) {
-            log.error("Unable to find receiver");
+            log.log(Level.WARNING,"Unable to find receiver");
             return;
         }
 
@@ -84,7 +85,7 @@ class WSServer extends WebSocketServer {
     private void handleUserName(UserName name, WebSocket conn) {
         User user = conn.getAttachment();
         if (user == null) {
-            log.warn("User not found in connections map");
+            log.log(Level.WARNING,"com.skillbox.cryptochat.User not found in connections map");
             return;
         }
         user.setName(name.getName());
@@ -94,7 +95,7 @@ class WSServer extends WebSocketServer {
         for (WebSocket peerConn : getConnections()) {
             User peer = peerConn.getAttachment();
             if (peer == null) {
-                log.warn("Peer not found in connections map");
+                log.log(Level.WARNING,"Peer not found in connections map");
                 continue;
             }
             conn.send(PacketPacker.pack(new UserStatus(peer, true)));
@@ -116,37 +117,43 @@ class WSServer extends WebSocketServer {
 
     }
 
-    private static void startServer(int port) throws InterruptedException, IOException {
-        log.info("Running on port {}", port);
+    public static void stopServer() {
+        try {
+            instance.stop();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void startServer(int port) throws InterruptedException, IOException {
+        log.info("Running on port " + port);
         WSServer s = new WSServer(port);
+        instance = s;
         s.start();
         BufferedReader systemInput = new BufferedReader(new InputStreamReader(System.in));
         while (true) {
-            String in = systemInput.readLine();
-            s.broadcast(in);
-            if (in.equals("exit")) {
-                s.stop(1000);
-                break;
-            }
+            systemInput.readLine();
         }
     }
 
     public static void main(String[] args) {
-        if (args.length == 0) {
-            log.error("No port specified");
-            exit(1);
+        int port = 8881;
+        if (args.length != 0) {
+            port = Integer.parseInt(args[0]);
         }
         try {
-            startServer(Integer.parseInt(args[0]));
+            startServer(port);
         } catch (Exception E) {
-            log.error("Exception in startServer", E);
+            log.log(Level.WARNING,"Exception in startServer", E);
         }
 
     }
 
     @Override
     public void onError(WebSocket conn, Exception ex) {
-        log.error("SERVER onError", ex);
+        log.log(Level.WARNING,"SERVER onError", ex);
     }
 
     @Override
@@ -154,5 +161,4 @@ class WSServer extends WebSocketServer {
         setConnectionLostTimeout(0);
         setConnectionLostTimeout(100);
     }
-
 }

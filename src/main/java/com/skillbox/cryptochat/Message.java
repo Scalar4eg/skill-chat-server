@@ -1,13 +1,17 @@
+package com.skillbox.cryptochat;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.java.Log;
+
+import java.util.logging.Level;
 
 @Data
-@Slf4j
+@Log
 @RequiredArgsConstructor
 @NoArgsConstructor
 class Message {
@@ -32,7 +36,7 @@ class Message {
         try {
             return objectMapper.writeValueAsString(this);
         } catch (JsonProcessingException e) {
-            log.error("Unable to serialize Message", e);
+            log.log(Level.SEVERE, "Unable to serialize com.skillbox.cryptochat.Message", e);
             return "";
         }
     }
@@ -42,7 +46,7 @@ class Message {
         try {
             return objectMapper.readValue(json, Message.class);
         } catch (JsonProcessingException e) {
-            log.error("Unable to deserialize Message", e);
+            log.log(Level.SEVERE, "Unable to deserialize com.skillbox.cryptochat.Message", e);
             return new Message();
         }
     }

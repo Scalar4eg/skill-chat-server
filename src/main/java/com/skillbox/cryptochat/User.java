@@ -1,3 +1,5 @@
+package com.skillbox.cryptochat;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

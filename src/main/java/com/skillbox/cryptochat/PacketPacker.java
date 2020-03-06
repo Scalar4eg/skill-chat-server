@@ -1,3 +1,5 @@
+package com.skillbox.cryptochat;
+
 class PacketPacker {
     public final static int USER_STATUS = 1;
     public final static int MESSAGE = 2;

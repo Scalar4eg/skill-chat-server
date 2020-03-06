@@ -1,0 +1,19 @@
+<appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
+    <application>skill-crypto-server</application>
+    <version>1</version>
+    <runtime>java8</runtime>
+    <sessions-enabled>true</sessions-enabled>
+    <system-properties>
+        <property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
+    </system-properties>
+    <instance-class>B4</instance-class>
+    <threadsafe>true</threadsafe>
+    <vm>true</vm>
+    <vm-settings>
+        <setting name="machine_type" value="n1-standard-1"/>
+        <setting name="forwarded_ports" value="8881"/>
+    </vm-settings>
+    <manual-scaling>
+        <instances>3</instances>
+    </manual-scaling>
+</appengine-web-app>
