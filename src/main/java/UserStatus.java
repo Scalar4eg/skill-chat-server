@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 class UserStatus {
     private User user;
-    private boolean isConnected;
+    private boolean connected;
 
     String toJson() {
         ObjectMapper objectMapper = new ObjectMapper();

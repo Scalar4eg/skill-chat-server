@@ -1,8 +1,8 @@
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 class IdGenerator {
-    private static final AtomicInteger counter = new AtomicInteger(10); // Easily overflowed in a long run
-    static int getNextId() {
+    private static final AtomicLong counter = new AtomicLong(10); // Easily overflowed in a long run
+    static long getNextId() {
         return counter.incrementAndGet();
     }
 }

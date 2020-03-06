@@ -12,9 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 @NoArgsConstructor
 class Message {
     private final static int GROUP_CHAT = 1;
-    private int sender;
+    private long sender;
     @NonNull
-    private int receiver;
+    private long receiver;
     @NonNull
     private String encodedText;
     private boolean corrupted = false;

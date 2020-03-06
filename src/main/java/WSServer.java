@@ -17,7 +17,7 @@ import static java.lang.System.exit;
 @Slf4j
 class WSServer extends WebSocketServer {
 
-    private static final Map<Integer, WebSocket> users = new ConcurrentHashMap<>();
+    private static final Map<Long, WebSocket> users = new ConcurrentHashMap<>();
 
     private WSServer(int port) {
         super(new InetSocketAddress(port));
